@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if not cart %}
+<div>
+    <h1 class="text-center">Cart Is Empty</h1>
+    <center>
+    <strong><a href="{% url 'shop:allcat' %}" class="text-center">Continue Shopping</a></strong>
+     </center>
+</div>
+{% else %}
+<div class="row m-3">
+    <h3 class="text-center mb-3">Shopping Cart</h3>
+    <div class="col-sm-6">
+        <table class="table table-bordered border-dark ">
+            <tr><th colspan="5" class="text-center">Cart Items</th></tr>
+            {% for i in cart %}
+            <tr>
+                <td><img src="{{i.product.image.url}}" height="200px" width="200px"></td>
+                <td><p><strong>{{i.product.pname}}</strong></p></td>
+                <td><p><strong> Product Id: {{i.product.id}}</strong></p>
+                <p><strong>Unit Price: {{i.product.price}}</strong></p>
+                <p><strong>Quantity: {{i.quantity}}*{{i.product.price}}</strong></p>
+                </td>
+                <td><p><strong>{{i.subtotal}} <i class="fa-solid fa-indian-rupee-sign"></i></strong></p></td>
+                <td style="font-size:25px;">
+                    {% if i.quantity < i.product.stock %}
+                    <a href="{% url 'cart:add_to_cart' i.product.pname %}" class="x"><i class="fa fa-plus-circle" style="color:blue;" aria-hidden="true"></i></a>
+                    <a href="{% url 'cart:cart_remove' i.product.pname %}"><i class="fa fa-minus-circle"  style="color:red; " aria-hidden="true"></i></a>
+                    <a href="{% url 'cart:cart_full_remove' i.product.pname %}"><i class="fa fa-trash"  style="color:black" aria-hidden="true"></i></a>
+                    {% else %}
+                    <a href="{% url 'cart:cart_remove' i.product.pname %}"><i class="fa fa-minus-circle"  style="color:red; " aria-hidden="true"></i></a>
+                    <a href="{% url 'cart:cart_full_remove' i.product.pname %}"><i class="fa fa-trash"  style="color:black; background-color:transparent;" aria-hidden="true"></i></a>
+                    <h4>out of stock</h4>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-sm-6 ">
+        <table class="table table-bordered border-dark ">
+            <tr><th class="text-center">Check out</th></tr>
+            <tr><td class="text-center fs-4"><strong>Total: {{total}} <i class="fa-solid fa-indian-rupee-sign"></i></strong></td></tr>
+            <tr>
+                <td>
+
+                    <a href="{% url 'shop:allcat' %}" class="btn btn-success ">Continue Shopping </a>
+                    <a href="{% url 'cart:orders' %}" class="btn btn-danger " style="position:absolute;right:38px;">place order</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

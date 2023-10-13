@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5 " style="margin-bottom:100px;">
+     <div>
+        {% if not order %}
+        <div>
+            <h3 class="text-center">You are not placed any order </h3>
+            <h5 class="text-center"><a href="{% url 'shop:allcat' %}">Continue shopping</a> </h5>
+        </div>
+    </div>
+    {% else %}
+
+    <div>
+        <table class="table table-bordered border-dark">
+            {% for i in order %}
+            <tr>
+                <td><img src="{{i.product.image.url}}" height="280px" width="300px"></td>
+                <td>
+                    <h4>Name of the Customer:<span style="color:red;text-transform:capitalize;"> {{u}}</span> </h4>
+                    <div>
+                        <h6>Delivery Address: {{i.address}}</h6>
+                        <h6>Phone Number: {{i.phone}}</h6>
+                        <h6>Product Name: {{i.product.pname}}</h6>
+                        <h6>Price: {{i.product.price}}</h6>
+                        <h6>Quantity Ordered: {{i.no_of_items}}</h6>
+                        <h6>Subtotal :{{i.sub_total}}</h6>
+                        <h6>Order Date: {{i.date_added}}</h6>
+                        <h4 style="color:green">Delivery status : {{i.delivery_status}}</h4>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
+</div>
+{% endblock %}
